@@ -36,7 +36,14 @@ module.exports.deleteCard = (req, res) => {
         res.status(ERROR_CODE_404).send({ message: 'Карточка с указанным _id не найдена' });
       }
     })
-    .catch(() => res.status(ERROR_CODE_500).send({ message: 'На сервере произошла ошибка' }));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(ERROR_CODE_400).send({
+          message: 'Передан невалидный id',
+        });
+      }
+      res.status(ERROR_CODE_500).send({ message: 'На сервере произошла ошибка' });
+    });
 };
 
 module.exports.likeCard = (req, res) => {

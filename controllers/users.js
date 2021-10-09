@@ -9,14 +9,7 @@ const ERROR_CODE_500 = 500;
 module.exports.findUsers = (req, res) => {
   User.find({})
     .then((users) => res.status(200).send({ data: users }))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(ERROR_CODE_400).send({
-          message: 'Переданы некорректные данные при создании пользователя',
-        });
-      }
-      res.status(ERROR_CODE_500).send({ message: 'На сервере произошла ошибка' });
-    });
+    .catch(() => res.status(ERROR_CODE_500).send({ message: 'На сервере произошла ошибка' }));
 };
 
 module.exports.findUserById = (req, res) => {
@@ -32,7 +25,14 @@ module.exports.findUserById = (req, res) => {
         });
       }
     })
-    .catch(() => res.status(ERROR_CODE_500).send({ message: 'На сервере произошла ошибка' }));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return res.status(ERROR_CODE_400).send({
+          message: 'Передан невалидный id',
+        });
+      }
+      return res.status(ERROR_CODE_500).send({ message: 'На сервере произошла ошибка' });
+    });
 };
 
 module.exports.createUser = (req, res) => {
