@@ -1,12 +1,17 @@
 // это файл маршрутов
-const router = require('express').Router(); // создали роутер
+const router = require('express')
+  .Router(); // создали роутер
 const {
-  findUsers, findUserById, createUser, updateUser, updateAvatar,
+  findUser,
+  findUsers,
+  findUserById,
+  updateUser,
+  updateAvatar,
 } = require('../controllers/users');
 
+router.get('/users/me', findUser);
 router.get('/users', findUsers);
 router.get('/users/:userId', findUserById);
-router.post('/users', createUser);
 router.patch('/users/me', updateUser);
 router.patch('/users/me/avatar', updateAvatar);
 
