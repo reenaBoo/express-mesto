@@ -12,7 +12,7 @@ const mongoose = require('mongoose');
 const routerUser = require('./routes/users');
 const routerCard = require('./routes/cards');
 const auth = require('./middlewares/auth');
-const { isValid } = require('./isValid/isValid');
+const { isValid } = require('./isvalid/isvalid');
 
 const {
   createUser,
