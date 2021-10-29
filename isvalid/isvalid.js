@@ -1,7 +1,7 @@
 const validator = require('validator');
 
 module.exports.isValid = (url) => {
-  const valided = validator.isURL(url);
+  const valided = validator.isURL(url, { require_protocol: true });
   if (valided) {
     return url;
   }

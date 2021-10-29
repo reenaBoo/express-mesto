@@ -13,6 +13,7 @@ const routerUser = require('./routes/users');
 const routerCard = require('./routes/cards');
 const auth = require('./middlewares/auth');
 const { isValid } = require('./isvalid/isvalid');
+const NotFoundError = require('./errors/not-found-error');
 
 const {
   createUser,
@@ -36,13 +37,8 @@ app.post('/signup', celebrate({
         .required()
         .min(8),
       name: Joi.string()
-        .required()
         .min(2)
         .max(30),
-      age: Joi.number()
-        .integer()
-        .required()
-        .min(18),
       about: Joi.string()
         .min(2)
         .max(30),
@@ -67,6 +63,10 @@ app.use(auth);
 
 app.use(routerUser);
 app.use(routerCard);
+
+app.use((req, res, next) => {
+  next(new NotFoundError('Ресурс не найден'));
+});
 
 app.use(errors());
 
